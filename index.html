@@ -48,6 +48,7 @@ button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
 .room:before{content:"";position:absolute;left:12%;bottom:-20px;width:76%;height:115px;border-radius:22px 22px 0 0;background:#b6b2a5;box-shadow:0 -14px 0 #c7c2b5,0 10px 20px #0002}
 .room:after{content:"";position:absolute;left:5%;top:0;width:25%;height:75%;background:linear-gradient(115deg,#fff3,transparent);transform:skew(-15deg);pointer-events:none}
 .frame{position:absolute;top:32px;left:50%;transform:translateX(-50%);height:250px;width:188px;border:8px solid #ad8a61;padding:7px;background:#f9f7ef;box-shadow:8px 10px 15px #0003;transition:width .25s,height .25s,border-color .25s;display:grid;place-items:center}
+.frame.no-mount{padding:0;background:transparent}
 .frame img{height:100%;width:100%;object-fit:contain;min-height:0}
 .frame .placeholder{font-size:16px;padding:0}.missing-photo{display:grid;place-items:center;text-align:center;background:#eae6dd;color:#777467;font:16px Georgia,serif;padding:20px;min-height:180px}.hero-image .missing-photo{width:100%;height:100%;font-size:21px}.frame .missing-photo{width:100%;height:100%;min-height:0;font-size:13px}.dialog-image-missing{min-height:240px}
 .choices{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 24px}
@@ -156,6 +157,11 @@ html{scroll-behavior:auto}.frame{transition:none}
 <button data-height="170" data-ratio=".8" aria-pressed="false">8 × 10 in</button>
 <button data-height="230" data-ratio=".75" aria-pressed="true">12 × 16 in</button>
 <button data-height="275" data-ratio=".75" aria-pressed="false">18 × 24 in</button>
+</div>
+<label>Preview mount</label>
+<div class="choices" id="mountOptions">
+<button data-mount="with" aria-pressed="true">With white mount</button>
+<button data-mount="without" aria-pressed="false">Without mount</button>
 </div>
 <p class="muted">Photos are shown uncropped. Frames are presented in a simple natural finish; print sizes are fixed standards. Final prices will be confirmed.</p>
 </div>
@@ -285,6 +291,9 @@ choiceGroup("#sizes",b=>{
  const h=Number(b.dataset.height);
  $("#frame").style.height=h+"px";
  $("#frame").style.width=Math.round(h*Number(b.dataset.ratio))+"px";
+});
+choiceGroup("#mountOptions",b=>{
+ $("#frame").classList.toggle("no-mount",b.dataset.mount==="without");
 });
 $("#frame").style.height="230px";$("#frame").style.width="173px";
 $("#closeDetail").onclick=()=>$("#detail").close();
