@@ -158,6 +158,11 @@ html{scroll-behavior:auto}.frame{transition:none}
 <button data-height="230" data-ratio=".75" aria-pressed="true">12 × 16 in</button>
 <button data-height="275" data-ratio=".75" aria-pressed="false">18 × 24 in</button>
 </div>
+<label>Preview orientation</label>
+<div class="choices" id="orientationOptions">
+<button data-orientation="portrait" aria-pressed="true">Portrait</button>
+<button data-orientation="landscape" aria-pressed="false">Landscape</button>
+</div>
 <label>Preview mount</label>
 <div class="choices" id="mountOptions">
 <button data-mount="with" aria-pressed="true">With white mount</button>
@@ -287,15 +292,21 @@ function choiceGroup(id,callback){
   callback(b);
  });
 }
-choiceGroup("#sizes",b=>{
- const h=Number(b.dataset.height);
- $("#frame").style.height=h+"px";
- $("#frame").style.width=Math.round(h*Number(b.dataset.ratio))+"px";
+let frameOrientation="portrait";
+function applyFrameSize(b){
+ const longSide=Number(b.dataset.height),shortSide=Math.round(longSide*Number(b.dataset.ratio));
+ $("#frame").style.height=(frameOrientation==="portrait"?longSide:shortSide)+"px";
+ $("#frame").style.width=(frameOrientation==="portrait"?shortSide:longSide)+"px";
+}
+choiceGroup("#sizes",applyFrameSize);
+choiceGroup("#orientationOptions",b=>{
+ frameOrientation=b.dataset.orientation;
+ applyFrameSize(document.querySelector("#sizes button[aria-pressed=true]"));
 });
 choiceGroup("#mountOptions",b=>{
  $("#frame").classList.toggle("no-mount",b.dataset.mount==="without");
 });
-$("#frame").style.height="230px";$("#frame").style.width="173px";
+applyFrameSize(document.querySelector("#sizes button[aria-pressed=true]"));
 $("#closeDetail").onclick=()=>$("#detail").close();
 $("#previewFrame").onclick=()=>{
  $("#roomSelect").value=selected;updateRoom();$("#detail").close();
