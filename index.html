@@ -269,7 +269,10 @@ function openDetail(index){
 function updateRoom(){
  const p=photos[Number($("#roomSelect").value)];
  $("#frame").replaceChildren();
- $("#frame").append(imageFor(p));
+ const photo=imageFor(p);
+ photo.onload=()=>applyFrameSize(document.querySelector("#sizes button[aria-pressed=true]"));
+ $("#frame").append(photo);
+ if(photo.complete&&photo.naturalWidth)applyFrameSize(document.querySelector("#sizes button[aria-pressed=true]"));
 }
 ["All","Sea & Sky","Urban Geometry","Everyday Stories","Nature"].forEach(t=>{
  const b=document.createElement("button");b.textContent=t;
@@ -294,9 +297,22 @@ function choiceGroup(id,callback){
 }
 let frameOrientation="portrait";
 function applyFrameSize(b){
+ const frame=$("#frame"),photo=frame.querySelector("img");
  const longSide=Number(b.dataset.height),shortSide=Math.round(longSide*Number(b.dataset.ratio));
- $("#frame").style.height=(frameOrientation==="portrait"?longSide:shortSide)+"px";
- $("#frame").style.width=(frameOrientation==="portrait"?shortSide:longSide)+"px";
+ let maxWidth=frameOrientation==="portrait"?shortSide:longSide;
+ let maxHeight=frameOrientation==="portrait"?longSide:shortSide;
+ const hasMount=!frame.classList.contains("no-mount");
+ const inset=hasMount?30:16;
+ maxWidth=Math.min(maxWidth,Math.max(80,frame.parentElement.clientWidth-40-inset));
+ if(!photo||!photo.naturalWidth||!photo.naturalHeight){
+  frame.style.height=(maxHeight+inset)+"px";
+  frame.style.width=(maxWidth+inset)+"px";
+  return;
+ }
+ const scale=Math.min(maxWidth/photo.naturalWidth,maxHeight/photo.naturalHeight);
+ const imageWidth=Math.round(photo.naturalWidth*scale),imageHeight=Math.round(photo.naturalHeight*scale);
+ frame.style.width=(imageWidth+inset)+"px";
+ frame.style.height=(imageHeight+inset)+"px";
 }
 choiceGroup("#sizes",applyFrameSize);
 choiceGroup("#orientationOptions",b=>{
@@ -305,6 +321,7 @@ choiceGroup("#orientationOptions",b=>{
 });
 choiceGroup("#mountOptions",b=>{
  $("#frame").classList.toggle("no-mount",b.dataset.mount==="without");
+ applyFrameSize(document.querySelector("#sizes button[aria-pressed=true]"));
 });
 applyFrameSize(document.querySelector("#sizes button[aria-pressed=true]"));
 $("#closeDetail").onclick=()=>$("#detail").close();
