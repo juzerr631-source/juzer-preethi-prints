@@ -2,14 +2,14 @@ const SITE = window.STORYTELLER;
 
 function publicImage(path) {
   if (!path) return "";
-  if (/^https?:\\/\\//i.test(path)) return path;
+  if (/^https?:\/\//i.test(path)) return path;
   return path.startsWith("/") ? path : `${location.pathname.replace(/[^/]*$/, "")}${path}`;
 }
 
 async function apiFetch(path, options = {}, token = "") {
   const headers = new Headers(options.headers || {});
   headers.set("apikey", SITE.publishableKey);
-  headers.set("Authorization", `Bearer ${token || SITE.publishableKey}`);
+  headers.set("Authorization", `Bearer ${token || SITE.anonKey}`);
   if (options.body && !(options.body instanceof FormData)) headers.set("Content-Type", "application/json");
   const response = await fetch(`${SITE.supabaseUrl}${path}`, { ...options, headers });
   const text = await response.text();
