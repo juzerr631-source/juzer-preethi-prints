@@ -9,14 +9,12 @@ window.STORYTELLER = Object.freeze({
     Preethi: {
       instagram: "https://www.instagram.com/gli.tch_frames/",
       upiName: "Preethi",
-      upiId: "preetiraju03@okhdfcbank",
-      qr: "images/IMG-20261014-WA0001.jpg"
+      upiId: "preetiraju03@okhdfcbank"
     },
     Juzer: {
       instagram: "https://www.instagram.com/lensxmoon/",
       upiName: "Juzer Raja",
-      upiId: "juzer786raja@okhdfcbank",
-      qr: "GooglePay_QR (1).png"
+      upiId: "juzer786raja@okhdfcbank"
     }
   }
 });

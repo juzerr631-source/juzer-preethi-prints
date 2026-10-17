@@ -20,13 +20,13 @@ async function apiFetch(path, options = {}, token = "") {
 }
 
 async function getArtwork(id) {
-  const q = new URLSearchParams({ select: "id,title,artist,category,image_path,description,price_a5_paise,price_a4_paise,price_a3_paise,is_test,is_published,sort_order", id: `eq.${id}` });
+  const q = new URLSearchParams({ select: "id,title,artist,category,image_path,description,price_a5_paise,price_a4_paise,price_a3_paise,is_published,sort_order", id: `eq.${id}` });
   const rows = await apiFetch(`/rest/v1/artworks?${q}`);
   return rows?.[0] || null;
 }
 
 async function getArtistArtworks(artist) {
-  const q = new URLSearchParams({ select: "id,title,artist,category,image_path,description,price_a5_paise,price_a4_paise,price_a3_paise,is_test,is_published,sort_order", artist: `eq.${artist}`, is_published: "eq.true", order: "sort_order.asc,title.asc" });
+  const q = new URLSearchParams({ select: "id,title,artist,category,image_path,description,price_a5_paise,price_a4_paise,price_a3_paise,is_published,sort_order", artist: `eq.${artist}`, is_published: "eq.true", order: "sort_order.asc,title.asc" });
   return await apiFetch(`/rest/v1/artworks?${q}`) || [];
 }
 
