@@ -4,6 +4,8 @@ const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
 const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const allowedOrigins = new Set([
   "https://juzerr631-source.github.io",
+  "https://thestorytellerframes.com",
+  "https://www.thestorytellerframes.com",
   "http://localhost:8000",
   "http://127.0.0.1:8000",
 ]);
