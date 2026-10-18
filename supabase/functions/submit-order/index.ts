@@ -87,16 +87,25 @@ Deno.serve(async (req: Request) => {
     const artistEmail = Deno.env.get(artwork.artist === "Preethi" ? "PREETHI_ORDER_EMAIL" : "JUZER_ORDER_EMAIL");
     const from = Deno.env.get("ORDER_FROM_EMAIL");
     let notification = "not_configured";
+    let customerNotification = "not_configured";
     if (apiKey && artistEmail && from) {
       const html = `<h2>New order ${escapeHtml(order.order_number)}</h2><p><b>${escapeHtml(artwork.title)}</b> · ${size} · ₹${(price / 100).toFixed(2)}</p><p>${escapeHtml(fields.customer_name)} · ${escapeHtml(fields.phone)} · ${escapeHtml(fields.email)}</p><p>${escapeHtml(fields.delivery_address)}, ${escapeHtml(fields.city)}, ${escapeHtml(fields.state)} ${escapeHtml(fields.postal_code)}, ${escapeHtml(fields.country)}</p><p>${escapeHtml(fields.special_request || "No note")}</p><p>Payment is pending manual verification.</p>`;
       try {
-        const mail = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" }, body: JSON.stringify({ from, to: [artistEmail], subject: `New StoryTeller order ${order.order_number}`, html }) });
+        const mail = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "Idempotency-Key": `order-artist-${order.order_number}` }, body: JSON.stringify({ from, to: [artistEmail], subject: `New StoryTeller order ${order.order_number}`, html }) });
         notification = mail.ok ? "sent" : "failed";
         if (!mail.ok) console.error("Order email failed", mail.status, await mail.text());
       } catch (e) { notification = "failed"; console.error("Order email error", e); }
       await fetch(`${supabaseUrl}/rest/v1/orders?order_number=eq.${encodeURIComponent(order.order_number)}`, { method: "PATCH", headers: { ...headers, "Content-Type": "application/json", Prefer: "return=minimal" }, body: JSON.stringify({ notification_status: notification }) });
     }
-    return response({ order: { ...order, notification_status: notification }, email_notification: notification }, 201, origin);
+    if (apiKey && from) {
+      const customerHtml = `<h2>Order received: ${escapeHtml(order.order_number)}</h2><p>Thank you, ${escapeHtml(fields.customer_name)}.</p><p>${escapeHtml(artwork.title)} by ${escapeHtml(artwork.artist)} · ${size} · ₹${(price / 100).toFixed(2)}</p><p>Your order is recorded. Payment is pending manual verification by the artist. This email is not proof of payment.</p><p>Keep your payment receipt and this order number. Please do not pay again if your bank already shows a successful payment.</p>`;
+      try {
+        const mail = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "Idempotency-Key": `order-customer-${order.order_number}` }, body: JSON.stringify({ from, to: [fields.email], subject: `StoryTeller order received ${order.order_number}`, html: customerHtml }) });
+        customerNotification = mail.ok ? "sent" : "failed";
+        if (!mail.ok) console.error("Customer order email failed", mail.status);
+      } catch { customerNotification = "failed"; }
+    }
+    return response({ order: { ...order, notification_status: notification }, email_notification: notification, email_notifications: { artist: notification, customer: customerNotification } }, 201, origin);
   } catch (error) {
     console.error("submit-order error", error);
     return response({ error: "The order could not be processed. Please try again." }, 500, origin);
