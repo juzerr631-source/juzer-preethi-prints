@@ -84,14 +84,17 @@ Deno.serve(async (req: Request) => {
     const order = inserted[0];
 
     const apiKey = Deno.env.get("RESEND_API_KEY");
-    const artistEmail = Deno.env.get(artwork.artist === "Preethi" ? "PREETHI_ORDER_EMAIL" : "JUZER_ORDER_EMAIL");
+    const recipientConfig = Deno.env.get("ARTIST_EMAILS");
+    const fallbackEmail = Deno.env.get(artwork.artist === "Preethi" ? "PREETHI_ORDER_EMAIL" : "JUZER_ORDER_EMAIL") || "";
+    const artistEmails = [...new Set((recipientConfig === undefined ? fallbackEmail : recipientConfig).split(",").map(email => email.trim().toLowerCase()).filter(Boolean))];
+    const validArtistEmails = artistEmails.length > 0 && artistEmails.length <= 50 && artistEmails.every(email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
     const from = Deno.env.get("ORDER_FROM_EMAIL");
     let notification = "not_configured";
     let customerNotification = "not_configured";
-    if (apiKey && artistEmail && from) {
+    if (apiKey && validArtistEmails && from) {
       const html = `<h2>New order ${escapeHtml(order.order_number)}</h2><p><b>${escapeHtml(artwork.title)}</b> · ${size} · ₹${(price / 100).toFixed(2)}</p><p>${escapeHtml(fields.customer_name)} · ${escapeHtml(fields.phone)} · ${escapeHtml(fields.email)}</p><p>${escapeHtml(fields.delivery_address)}, ${escapeHtml(fields.city)}, ${escapeHtml(fields.state)} ${escapeHtml(fields.postal_code)}, ${escapeHtml(fields.country)}</p><p>${escapeHtml(fields.special_request || "No note")}</p><p>Payment is pending manual verification.</p>`;
       try {
-        const mail = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "Idempotency-Key": `order-artist-${order.order_number}` }, body: JSON.stringify({ from, to: [artistEmail], subject: `New StoryTeller order ${order.order_number}`, html }) });
+        const mail = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "Idempotency-Key": `order-artist-${order.order_number}` }, body: JSON.stringify({ from, to: artistEmails, subject: `New StoryTeller order ${order.order_number}`, html }) });
         notification = mail.ok ? "sent" : "failed";
         if (!mail.ok) console.error("Order email failed", mail.status, await mail.text());
       } catch (e) { notification = "failed"; console.error("Order email error", e); }
