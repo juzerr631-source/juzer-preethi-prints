@@ -24,6 +24,11 @@ async function checkPayment(){
  }catch(e){msg.textContent='Unable to check payment status. Please contact support with your order number.';return false}
  finally{btn.disabled=false}
 }
+// Restored order pages call showPayment before this script loads.
+if(document.getElementById('payment')?.classList.contains('show')){
+ const saved=JSON.parse(sessionStorage.getItem('storyteller_payment')||'null');
+ if(saved?.order)showPayment(saved.order,Number(saved.amount),saved.notification||'not_configured');
+}
 function loadCheckout(){return new Promise((resolve,reject)=>{if(window.Razorpay)return resolve();const s=document.createElement('script');s.src='https://checkout.razorpay.com/v1/checkout.js';s.onload=resolve;s.onerror=()=>reject(Error('Razorpay checkout could not load.'));document.head.appendChild(s)})}
 async function payCard(){
  const button=$('razorpayPay'),msg=$('razorpayMessage');
