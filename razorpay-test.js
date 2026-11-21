@@ -1,0 +1,45 @@
+/* Razorpay test checkout. Secret credentials stay in Supabase Edge Functions. */
+(function(){
+const $=id=>document.getElementById(id);
+const originalShowPayment=showPayment;
+showPayment=function(no,amount,notification){
+ originalShowPayment(no,amount,notification);
+ if($('razorpayChoice'))return;
+ const wrap=document.createElement('section');wrap.id='razorpayChoice';
+ wrap.style.cssText='border:1px solid #d3d1c6;padding:20px;margin:24px 0;background:#faf8f2';
+ wrap.innerHTML='<span class="eyebrow">Payment options</span><h3 style="font:400 25px Playfair Display,Georgia,serif;margin:8px 0">Choose how to pay.</h3><p class="muted">UPI goes directly to the selected artist. Card checkout is currently in Razorpay TEST MODE; no real card charges.</p><button class="button" type="button" id="razorpayPay">Test debit / credit card payment →</button><p class="muted" id="razorpayMessage" role="status"></p>';
+ const upi=$('payment').querySelector('.upi');upi.parentNode.insertBefore(wrap,upi);
+ $('razorpayPay').addEventListener('click',payCard);
+};
+function loadCheckout(){return new Promise((resolve,reject)=>{if(window.Razorpay)return resolve();const s=document.createElement('script');s.src='https://checkout.razorpay.com/v1/checkout.js';s.onload=resolve;s.onerror=()=>reject(Error('Razorpay checkout could not load.'));document.head.appendChild(s)})}
+async function payCard(){
+ const button=$('razorpayPay'),msg=$('razorpayMessage');
+ if(!button||button.disabled)return;
+ const saved=JSON.parse(sessionStorage.getItem('storyteller_payment')||'null');
+ const draft=JSON.parse(sessionStorage.getItem('storyteller_order_draft')||'null');
+ if(!saved?.order||!draft?.email){msg.textContent='Your payment session expired. Please return to checkout.';return}
+ button.disabled=true;msg.textContent='Preparing secure test checkout…';
+ try{
+  const data=await apiFetch('/functions/v1/create-razorpay-order',{method:'POST',body:JSON.stringify({order_number:saved.order,email:draft.email})});
+  await loadCheckout();
+  const checkout=new Razorpay({
+   key:data.key_id,amount:data.amount,currency:data.currency,name:'The StoryTeller Frames',
+   description:'TEST MODE · '+saved.order,order_id:data.razorpay_order_id,
+   prefill:{name:data.name,email:data.email,contact:data.phone},
+   theme:{color:'#344b32'},
+   handler:async function(result){
+    msg.textContent='Payment returned. Verifying securely…';
+    try{
+     const verification=await apiFetch('/functions/v1/verify-razorpay-payment',{method:'POST',body:JSON.stringify({order_number:saved.order,email:draft.email,razorpay_order_id:result.razorpay_order_id,razorpay_payment_id:result.razorpay_payment_id,razorpay_signature:result.razorpay_signature})});
+     if(verification.verified){msg.textContent='Test payment verified successfully. Order '+saved.order+' marked paid.';$('paymentStatus').textContent='Payment status: verified (Razorpay test transaction).';button.disabled=true;button.textContent='Test payment verified ✓';return}
+     msg.textContent='Payment is awaiting capture. Do not retry until its status is checked.';
+    }catch(e){msg.textContent='Verification incomplete: '+e.message+' Do not pay again; retain your payment ID.'}
+    button.disabled=false;
+   },
+   modal:{ondismiss:function(){if(!button.textContent.includes('verified')){button.disabled=false;msg.textContent='Checkout closed. No successful payment confirmed.'}}}
+  });
+  checkout.on('payment.failed',function(e){msg.textContent='Test payment failed: '+(e.error?.description||'Please try again.');button.disabled=false});
+  checkout.open();
+ }catch(e){msg.textContent=e.message||'Unable to start test checkout.';button.disabled=false}
+}
+})();
