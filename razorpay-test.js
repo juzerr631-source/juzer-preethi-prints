@@ -7,10 +7,23 @@ showPayment=function(no,amount,notification){
  if($('razorpayChoice'))return;
  const wrap=document.createElement('section');wrap.id='razorpayChoice';
  wrap.style.cssText='border:1px solid #d3d1c6;padding:20px;margin:24px 0;background:#faf8f2';
- wrap.innerHTML='<span class="eyebrow">Payment options</span><h3 style="font:400 25px Playfair Display,Georgia,serif;margin:8px 0">Choose how to pay.</h3><p class="muted">UPI goes directly to the selected artist. Card checkout is currently in Razorpay TEST MODE; no real card charges.</p><button class="button" type="button" id="razorpayPay">Test debit / credit card payment →</button><p class="muted" id="razorpayMessage" role="status"></p>';
+ wrap.innerHTML='<span class="eyebrow">Payment options</span><h3 style="font:400 25px Playfair Display,Georgia,serif;margin:8px 0">Choose how to pay.</h3><p class="muted">UPI goes directly to the selected artist. Card checkout is currently in Razorpay TEST MODE; no real card charges.</p><button class="button" type="button" id="razorpayPay">Test debit / credit card payment →</button><button class="button" type="button" id="razorpayCheck" style="margin-top:10px">Check previous payment status</button><p class="muted" id="razorpayMessage" role="status"></p>';
  const upi=$('payment').querySelector('.upi');upi.parentNode.insertBefore(wrap,upi);
- $('razorpayPay').addEventListener('click',payCard);
+ $('razorpayPay').addEventListener('click',payCard);$('razorpayCheck').addEventListener('click',checkPayment);
 };
+async function checkPayment(){
+ const btn=$('razorpayCheck'),msg=$('razorpayMessage');
+ const saved=JSON.parse(sessionStorage.getItem('storyteller_payment')||'null');
+ const draft=JSON.parse(sessionStorage.getItem('storyteller_order_draft')||'null');
+ if(!saved?.order||!draft?.email){msg.textContent='Payment session expired. Contact support with your order number.';return false}
+ btn.disabled=true;msg.textContent='Checking Razorpay payment status securely…';
+ try{
+  const result=await apiFetch('/functions/v1/reconcile-razorpay-order',{method:'POST',body:JSON.stringify({order_number:saved.order,email:draft.email})});
+  if(result.verified){msg.textContent='Test payment captured and verified. Order '+saved.order+' is paid.';const status=$('paymentStatus');if(status)status.textContent='Payment status: verified (Razorpay test transaction).';$('razorpayPay').disabled=true;$('razorpayPay').textContent='Test payment verified ✓';btn.textContent='Payment verified ✓';return true}
+  msg.textContent=result.status==='not_captured'?'No captured payment found for this order. Do not retry until the order is checked.':'Payment needs manual review. Do not pay again.';return false
+ }catch(e){msg.textContent='Unable to check payment status. Please contact support with your order number.';return false}
+ finally{btn.disabled=false}
+}
 function loadCheckout(){return new Promise((resolve,reject)=>{if(window.Razorpay)return resolve();const s=document.createElement('script');s.src='https://checkout.razorpay.com/v1/checkout.js';s.onload=resolve;s.onerror=()=>reject(Error('Razorpay checkout could not load.'));document.head.appendChild(s)})}
 async function payCard(){
  const button=$('razorpayPay'),msg=$('razorpayMessage');
@@ -18,6 +31,8 @@ async function payCard(){
  const saved=JSON.parse(sessionStorage.getItem('storyteller_payment')||'null');
  const draft=JSON.parse(sessionStorage.getItem('storyteller_order_draft')||'null');
  if(!saved?.order||!draft?.email){msg.textContent='Your payment session expired. Please return to checkout.';return}
+ button.disabled=true;msg.textContent='Checking for any earlier captured payment…';
+ if(await checkPayment()){return}
  button.disabled=true;msg.textContent='Preparing secure test checkout…';
  try{
   const data=await apiFetch('/functions/v1/create-razorpay-order',{method:'POST',body:JSON.stringify({order_number:saved.order,email:draft.email})});
