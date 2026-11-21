@@ -19,7 +19,7 @@ async function checkPayment(){
  btn.disabled=true;msg.textContent='Checking Razorpay payment status securely…';
  try{
   const result=await apiFetch('/functions/v1/reconcile-razorpay-order',{method:'POST',body:JSON.stringify({order_number:saved.order,email:draft.email})});
-  if(result.verified){msg.textContent='Test payment captured and verified. Order '+saved.order+' is paid.';const status=$('paymentStatus');if(status)status.textContent='Payment status: verified (Razorpay test transaction).';$('razorpayPay').disabled=true;$('razorpayPay').textContent='Test payment verified ✓';btn.textContent='Payment verified ✓';return true}
+  if(result.verified){markPaid();msg.textContent='Test payment captured and verified. Order '+saved.order+' is paid.';const status=$('paymentStatus');if(status)status.textContent='Payment status: verified (Razorpay test transaction).';$('razorpayPay').disabled=true;$('razorpayPay').textContent='Test payment verified ✓';btn.textContent='Payment verified ✓';return true}
   msg.textContent=result.status==='not_captured'?'No captured payment found for this order. Do not retry until the order is checked.':'Payment needs manual review. Do not pay again.';return false
  }catch(e){msg.textContent='Unable to check payment status. Please contact support with your order number.';return false}
  finally{btn.disabled=false}
@@ -28,6 +28,15 @@ async function checkPayment(){
 if(document.getElementById('payment')?.classList.contains('show')){
  const saved=JSON.parse(sessionStorage.getItem('storyteller_payment')||'null');
  if(saved?.order)showPayment(saved.order,Number(saved.amount),saved.notification||'not_configured');
+}
+function markPaid(){
+ const pay=document.getElementById('payment');
+ if(pay){
+  const upi=pay.querySelector('.upi');if(upi)upi.style.display='none';
+  const payButton=document.getElementById('payButton');if(payButton)payButton.style.display='none';
+  const qr=document.getElementById('qrOptions');if(qr)qr.style.display='none';
+  const status=document.getElementById('paymentStatus');if(status)status.textContent='Payment status: verified (Razorpay test transaction).';
+ }
 }
 function loadCheckout(){return new Promise((resolve,reject)=>{if(window.Razorpay)return resolve();const s=document.createElement('script');s.src='https://checkout.razorpay.com/v1/checkout.js';s.onload=resolve;s.onerror=()=>reject(Error('Razorpay checkout could not load.'));document.head.appendChild(s)})}
 async function payCard(){
@@ -51,7 +60,7 @@ async function payCard(){
     msg.textContent='Payment returned. Verifying securely…';
     try{
      const verification=await apiFetch('/functions/v1/verify-razorpay-payment',{method:'POST',body:JSON.stringify({order_number:saved.order,email:draft.email,razorpay_order_id:result.razorpay_order_id,razorpay_payment_id:result.razorpay_payment_id,razorpay_signature:result.razorpay_signature})});
-     if(verification.verified){msg.textContent='Test payment verified successfully. Order '+saved.order+' marked paid.';$('paymentStatus').textContent='Payment status: verified (Razorpay test transaction).';button.disabled=true;button.textContent='Test payment verified ✓';return}
+     if(verification.verified){markPaid();msg.textContent='Test payment verified successfully. Order '+saved.order+' marked paid.';$('paymentStatus').textContent='Payment status: verified (Razorpay test transaction).';button.disabled=true;button.textContent='Test payment verified ✓';return}
      msg.textContent='Payment is awaiting capture. Do not retry until its status is checked.';
     }catch(e){msg.textContent='Verification incomplete: '+e.message+' Do not pay again; retain your payment ID.'}
     button.disabled=false;
