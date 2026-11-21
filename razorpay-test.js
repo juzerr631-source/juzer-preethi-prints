@@ -29,6 +29,17 @@ if(document.getElementById('payment')?.classList.contains('show')){
  const saved=JSON.parse(sessionStorage.getItem('storyteller_payment')||'null');
  if(saved?.order)showPayment(saved.order,Number(saved.amount),saved.notification||'not_configured');
 }
+async function reconcileAfterCheckout(){
+ const btn=$('razorpayPay'),msg=$('razorpayMessage');
+ if(!btn||!msg)return;
+ btn.disabled=true;msg.textContent='Checking captured payment status…';
+ for(let attempt=0;attempt<3;attempt++){
+  const verified=await checkPayment();
+  if(verified)return;
+  if(attempt<2)await new Promise(resolve=>setTimeout(resolve,1500));
+ }
+ btn.disabled=false;msg.textContent='Payment status not confirmed. Use Check previous payment status before trying again.';
+}
 function markPaid(){
  const pay=document.getElementById('payment');
  if(pay){
@@ -61,13 +72,13 @@ async function payCard(){
     try{
      const verification=await apiFetch('/functions/v1/verify-razorpay-payment',{method:'POST',body:JSON.stringify({order_number:saved.order,email:draft.email,razorpay_order_id:result.razorpay_order_id,razorpay_payment_id:result.razorpay_payment_id,razorpay_signature:result.razorpay_signature})});
      if(verification.verified){markPaid();msg.textContent='Test payment verified successfully. Order '+saved.order+' marked paid.';$('paymentStatus').textContent='Payment status: verified (Razorpay test transaction).';button.disabled=true;button.textContent='Test payment verified ✓';return}
-     msg.textContent='Payment is awaiting capture. Do not retry until its status is checked.';
-    }catch(e){msg.textContent='Verification incomplete: '+e.message+' Do not pay again; retain your payment ID.'}
+     await reconcileAfterCheckout();return;
+    }catch(e){await reconcileAfterCheckout();return}
     button.disabled=false;
    },
-   modal:{ondismiss:function(){if(!button.textContent.includes('verified')){button.disabled=false;msg.textContent='Checkout closed. No successful payment confirmed.'}}}
+   modal:{ondismiss:function(){if(!button.textContent.includes('verified')){msg.textContent='Checkout closed. Checking payment status…';reconcileAfterCheckout()}}}
   });
-  checkout.on('payment.failed',function(e){msg.textContent='Test payment failed: '+(e.error?.description||'Please try again.');button.disabled=false});
+  checkout.on('payment.failed',function(e){msg.textContent='Payment was declined or checkout could not finish. Checking whether any payment was captured…';reconcileAfterCheckout()});
   checkout.open();
  }catch(e){msg.textContent=e.message||'Unable to start test checkout.';button.disabled=false}
 }
