@@ -1,0 +1,21 @@
+/* The StoryTeller Frames — Art House × Editorial, design foundation v2 */
+:root{--bg:#F6F3ED;--ink:#252722;--line:#D8D2C8;--soft:#E8E1D5;--muted:#686B61;--green:#414D3D;--gold:#A58A62;--font-display:'Playfair Display',Georgia,serif;--font-body:'DM Sans',Arial,sans-serif;--space-xs:.5rem;--space-sm:1rem;--space-md:1.5rem;--space-lg:3rem;--space-xl:5rem;--content-max:1320px;--ease-editorial:cubic-bezier(.22,1,.36,1)}
+html{scroll-behavior:smooth}body{background:var(--bg);color:var(--ink);font-family:var(--font-body)}
+a,button{ -webkit-tap-highlight-color:transparent}
+:where(a,button,input,select,textarea):focus-visible{outline:2px solid var(--green);outline-offset:4px}
+::selection{background:#A58A6255;color:var(--ink)}
+.editorial-label{font:500 .68rem/1.5 var(--font-body);text-transform:uppercase;letter-spacing:.19em;color:var(--muted)}
+.editorial-heading{font:400 clamp(2.5rem,6vw,6rem)/1.08 var(--font-display);letter-spacing:-.045em}
+.editorial-container{width:min(88%,var(--content-max));margin-inline:auto}
+.editorial-rule{border:0;border-top:1px solid var(--line)}
+.editorial-button{display:inline-flex;align-items:center;justify-content:center;gap:.75rem;min-height:46px;padding:.75rem 1.25rem;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;font:500 .78rem var(--font-body);transition:background .25s,color .25s,transform .3s var(--ease-editorial)}
+.editorial-button:hover{background:var(--ink);color:var(--bg);transform:translateY(-2px)}
+.editorial-button--solid{background:var(--green);color:white;border-color:var(--green)}
+.editorial-button--solid:hover{background:var(--ink);border-color:var(--ink);color:white}
+.editorial-card-image{display:block;width:100%;object-fit:cover;transition:transform .65s var(--ease-editorial)}
+.editorial-card:hover .editorial-card-image{transform:scale(1.025)}
+.editorial-image-frame{overflow:hidden;background:var(--soft)}
+.editorial-reveal{opacity:0;transform:translateY(18px);transition:opacity .75s var(--ease-editorial),transform .75s var(--ease-editorial)}
+.editorial-reveal.is-visible{opacity:1;transform:none}
+@media(max-width:700px){:root{--space-lg:2rem;--space-xl:3rem}.editorial-container{width:90%}.editorial-button{min-height:48px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.editorial-reveal{opacity:1;transform:none}}
