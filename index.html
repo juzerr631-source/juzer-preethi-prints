@@ -121,15 +121,31 @@ footer{border-color:#575B52;color:#CBC9C0}
 .home-v2 .artist-profile a{display:inline-block;margin-top:8px;border-bottom:1px solid var(--ink);padding-bottom:4px}
 .home-v2 .support-strip{margin-top:20px}
 @media(max-width:760px){.home-v2{padding:0 5%}.home-v2 .hero{grid-template-columns:1fr;min-height:0;padding:62px 0 75px;gap:36px}.home-v2 .hero-art .art-panel{aspect-ratio:5/4}.home-v2 .collection{padding:60px 0}.home-v2 .collection-grid{grid-template-columns:1fr;gap:32px}.home-v2 .collection-card:nth-child(2){margin-top:0}.home-v2 .section-heading{align-items:start;flex-direction:column}.home-v2 .artist-rows{grid-template-columns:1fr;gap:36px}.home-v2 .artists-editorial{padding:55px 0}.home-v2 h1{font-size:clamp(53px,12vw,76px)}}
+</style><style>
+/* Cinematic homepage hero. The uploaded photograph is served from this repository. */
+.home-v2 .cinematic-hero{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:flex-start;text-align:left;min-height:min(850px,calc(100svh - 85px));margin-inline:calc(-6% / .88);padding:90px 6%;overflow:hidden;background:#101110}
+.home-v2 .cinematic-hero::before{content:"";display:block;position:absolute;inset:0;z-index:-2;background:url("images/DSC_1079%20-%20Copy.jpg") center 45%/cover no-repeat;border:0;border-radius:0;width:auto;height:auto;opacity:1}
+.home-v2 .cinematic-hero::after{content:"";display:block;position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(8,10,9,.92),rgba(8,10,9,.65) 48%,rgba(8,10,9,.18)),linear-gradient(0deg,rgba(8,10,9,.65),transparent 38%);border:0;border-radius:0;width:auto;height:auto;opacity:1}
+.home-v2 .cinematic-hero .mark{width:min(100%,1200px);padding:0;position:relative}
+.home-v2 .cinematic-hero h1{font:400 clamp(65px,9.4vw,152px)/.96 var(--font-display);letter-spacing:-.065em;margin:24px 0;color:#F6F3ED}
+.home-v2 .cinematic-hero h1 em{font-weight:400}
+.home-v2 .cinematic-hero .intro{font-size:15px;line-height:1.7;max-width:440px;color:#E4E0D8;margin:26px 0 0}
+.home-v2 .cinematic-hero .eyebrow{color:#E0C9A2}
+.home-v2 .cinematic-hero .artist-links{justify-content:flex-start;margin-top:30px}
+.home-v2 .cinematic-hero .editorial-button{border-color:#EEE4D7;color:#F6F3ED;background:transparent}
+.home-v2 .cinematic-hero .editorial-button--solid{background:#F6F3ED;color:#252722}
+.home-v2 .cinematic-hero .editorial-button:hover{background:#F6F3ED;color:#252722}
+.home-v2 .cinematic-hero .hero-credit{position:absolute;right:6%;bottom:22px;color:#DEDAD1;font-size:10px;letter-spacing:.1em}
+@media(max-width:760px){.home-v2 .cinematic-hero{margin-inline:calc(-5% / .9);min-height:max(650px,calc(100svh - 76px));padding:75px 5.5%}.home-v2 .cinematic-hero::before{background-position:55% 45%}.home-v2 .cinematic-hero::after{background:linear-gradient(90deg,rgba(8,10,9,.87),rgba(8,10,9,.45)),linear-gradient(0deg,rgba(8,10,9,.6),transparent 45%)}.home-v2 .cinematic-hero h1{font-size:clamp(59px,13vw,90px)}.home-v2 .cinematic-hero .intro{font-size:13px;max-width:300px}.home-v2 .cinematic-hero .hero-credit{right:5%}}
 </style></head>
 <body>
   <div class="notice">A shared place for photographs and the stories they hold</div>
   <header><a class="wordmark" href="index.html">The StoryTeller Frames<small>PHOTOGRAPHY BY JUZER &amp; PREETHI</small></a><div class="header-actions"><button class="menu-button" id="menuOpen" aria-controls="artistMenu" aria-expanded="false">Artists&nbsp; ☰</button><a class="brand-logo-link" href="index.html" aria-label="StoryTeller home"><img class="brand-logo" src="images/storyteller-logo.jpg" width="94" height="94" alt="StoryTeller — Where frames find a Home"></a></div></header>
   <div class="menu" id="artistMenu" aria-hidden="true"><div class="menu-panel"><div class="menu-head"><span class="eyebrow">Meet the artists</span><button class="menu-close" id="menuClose" aria-label="Close menu">Close&nbsp; ×</button></div><nav class="menu-links"><a href="artist.html?artist=Preethi">Preethi’s gallery</a><a href="artist.html?artist=Juzer">Juzer’s gallery</a><a href="about.html">About Preethi</a><a href="support.html">Feedback & support</a><a href="admin.html">Artist sign in</a></nav></div></div>
   <main class="home-v2">
-<section class="hero" aria-labelledby="brandTitle">
- <div class="mark"><span class="eyebrow">An independent photography gallery</span><h1 id="brandTitle">Every frame<br>tells a <em>story.</em></h1><p class="tagline">where frames find a home.</p><div class="intro"><p>Two photographers. Two ways of seeing. A collection of moments worth keeping close.</p><p>Discover fine art photographs thoughtfully made for your walls.</p></div><div class="artist-links"><a class="editorial-button editorial-button--solid" href="#collections">Explore the collection ↗</a><a class="editorial-button" href="#artists">Meet the artists</a></div></div>
- <div class="hero-art"><div class="art-panel" id="featuredHero"><span class="art-placeholder">A moment, framed forever.</span></div><div class="art-caption"><span id="featuredCredit">Selected work · The StoryTeller Frames</span><span>01 / Gallery</span></div></div>
+<section class="hero cinematic-hero" aria-labelledby="brandTitle">
+ <div class="mark"><span class="eyebrow">An independent photography gallery</span><h1 id="brandTitle">STORIES<br><em>WORTH</em><br>FRAMING.</h1><p class="intro">Two perspectives. One collection.<br>Fine art photography by Juzer &amp; Preethi.</p><div class="artist-links"><a class="editorial-button editorial-button--solid" href="#collections">Explore the collection ↗</a><a class="editorial-button" href="#artists">Meet the artists</a></div></div>
+ <div class="hero-credit">Featured photograph · Juzer Raja</div>
 </section>
 <section class="collection" id="collections"><div class="section-heading"><div><span class="eyebrow">The collection</span><h2>Seen differently.<br>Kept forever.</h2></div><p class="intro" style="max-width:300px;margin:0">Explore photographs that hold a place, a feeling, or a fleeting moment.</p></div>
 <div class="collection-grid">
