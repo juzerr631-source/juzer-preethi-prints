@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f5f2eb">
+  <meta name="theme-color" content="#252722">
   <meta name="description" content="Photographs by Juzer and Preethi, made to find a place in your home.">
   <title>The StoryTeller Frames — where frames find a home.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,8 +22,61 @@
     @media(max-width:600px){header{margin:0 5%;padding:18px 0}.wordmark{font-size:20px}.hero{min-height:80svh;padding:55px 0 60px}.hero::before{width:86vw;height:86vw}.hero::after{width:78vw;height:78vw}.mark{padding:50px 5px}.tagline{font-size:16px}.intro{font-size:13px}.social{padding:42px 0 50px}.social-link{width:min(100%,330px)}footer{margin:0 5%}}
   .header-actions{display:flex;align-items:center;gap:18px;flex-shrink:0}.brand-logo{display:block;width:94px;height:94px;object-fit:contain}.brand-logo-link{display:block;line-height:0}@media(max-width:600px){header{gap:10px}.header-actions{gap:10px}.brand-logo{width:66px;height:66px}.wordmark{font-size:17px}.wordmark small{font-size:8px;letter-spacing:.05em}.menu-button{font-size:10px}}
 .hero .mark{animation:heroEnter .95s cubic-bezier(.2,.7,.2,1) both}@keyframes heroEnter{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.button,.social-link{transition:transform .25s ease,background .25s ease,border-color .25s ease}.button:hover,.social-link:hover{transform:translateY(-3px)}.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:none}.support-strip{padding:52px 0;border-top:1px solid var(--line);text-align:center}.support-strip h2{font:400 32px 'Playfair Display',Georgia,serif}.support-strip p{max-width:500px;margin:0 auto 20px;color:var(--muted)}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+/* Full charcoal homepage experiment. Scoped to index.html only. */
+:root{--bg:#252722;--ink:#F6F3ED;--line:#575B52;--soft:#353A34;--muted:#CBC9C0;--green:#D2BE98;--gold:#C8A979}
+body{background:#252722;color:#F6F3ED}
+.notice{background:#353A34;color:#D9D6CC}
+header{border-color:#575B52}
+.wordmark small,.eyebrow{color:#C8BFAE}
+.menu{background:#0009}.menu-panel{background:#252722;color:#F6F3ED}.menu-links a,.menu-head{border-color:#575B52}
+.home-v2 .tagline{color:#D7C3A0}
+.home-v2 .intro{color:#D7D6CF}
+.home-v2 .art-caption,.home-v2 .collection-card span{color:#CBC9C0}
+.home-v2 .hero-art .art-panel,.home-v2 .collection-card .art-panel{background:#353A34}
+.home-v2 .art-placeholder{color:#D7C3A0}
+.home-v2 .artists-editorial{background:#30352F;color:#F6F3ED}
+.home-v2 .artists-editorial .artist-profile{border-top-color:#62675D}
+.home-v2 .artists-editorial .artist-profile p{color:#D7D6CF}
+.home-v2 .artists-editorial .artist-profile a{color:#F6F3ED}
+.home-v2 .artist-profile p{color:#D7D6CF}
+.home-v2 .artist-profile a{border-bottom-color:#C8A979}
+.home-v2 .social-link{border-color:#62675D}
+.home-v2 .social-link span{color:#D7D6CF}
+.home-v2 .support-strip p{color:#D7D6CF}
+.home-v2 .editorial-button{border-color:#D8D2C8;background:transparent;color:#F6F3ED}
+.home-v2 .editorial-button:hover{background:#F6F3ED;color:#252722}
+.home-v2 .editorial-button--solid{background:#D8C5A2;color:#252722;border-color:#D8C5A2}
+.home-v2 .editorial-button--solid:hover{background:#F6F3ED;color:#252722}
+footer{border-color:#575B52;color:#CBC9C0}
 </style>
 <link rel="stylesheet" href="assets/art-house-v2.css?v=1">
+<style>/* Full charcoal homepage experiment. Scoped to index.html only. */
+:root{--bg:#252722;--ink:#F6F3ED;--line:#575B52;--soft:#353A34;--muted:#CBC9C0;--green:#D2BE98;--gold:#C8A979}
+body{background:#252722;color:#F6F3ED}
+.notice{background:#353A34;color:#D9D6CC}
+header{border-color:#575B52}
+.wordmark small,.eyebrow{color:#C8BFAE}
+.menu{background:#0009}.menu-panel{background:#252722;color:#F6F3ED}.menu-links a,.menu-head{border-color:#575B52}
+.home-v2 .tagline{color:#D7C3A0}
+.home-v2 .intro{color:#D7D6CF}
+.home-v2 .art-caption,.home-v2 .collection-card span{color:#CBC9C0}
+.home-v2 .hero-art .art-panel,.home-v2 .collection-card .art-panel{background:#353A34}
+.home-v2 .art-placeholder{color:#D7C3A0}
+.home-v2 .artists-editorial{background:#30352F;color:#F6F3ED}
+.home-v2 .artists-editorial .artist-profile{border-top-color:#62675D}
+.home-v2 .artists-editorial .artist-profile p{color:#D7D6CF}
+.home-v2 .artists-editorial .artist-profile a{color:#F6F3ED}
+.home-v2 .artist-profile p{color:#D7D6CF}
+.home-v2 .artist-profile a{border-bottom-color:#C8A979}
+.home-v2 .social-link{border-color:#62675D}
+.home-v2 .social-link span{color:#D7D6CF}
+.home-v2 .support-strip p{color:#D7D6CF}
+.home-v2 .editorial-button{border-color:#D8D2C8;background:transparent;color:#F6F3ED}
+.home-v2 .editorial-button:hover{background:#F6F3ED;color:#252722}
+.home-v2 .editorial-button--solid{background:#D8C5A2;color:#252722;border-color:#D8C5A2}
+.home-v2 .editorial-button--solid:hover{background:#F6F3ED;color:#252722}
+footer{border-color:#575B52;color:#CBC9C0}
+</style>
 <style>
 /* Phase 2: editorial homepage, scoped to this preview branch */
 .home-v2{margin:0 auto;max-width:1440px;padding:0 6%}
