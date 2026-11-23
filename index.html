@@ -53,6 +53,14 @@
 .home-v2 .collection-card h3{font:400 clamp(22px,2.8vw,35px) var(--font-display);margin:0}
 .home-v2 .collection-card span{font-size:12px;color:var(--muted)}
 .home-v2 .artists-editorial{padding:80px 0;border-top:1px solid var(--line)}
+/* Charcoal editorial artist chapter: intentionally scoped to homepage */
+.home-v2 .artists-editorial{background:#252722;color:#F6F3ED;margin-inline:calc(-6% / .88);padding:90px max(6%,calc((100vw - 1267px)/2));border-top:0}
+.home-v2 .artists-editorial .eyebrow{color:#C6B89F}
+.home-v2 .artists-editorial .artist-profile{border-top-color:#706F66}
+.home-v2 .artists-editorial .artist-profile p{color:#D0CEC5}
+.home-v2 .artists-editorial .artist-profile a{color:#F6F3ED;border-bottom-color:#A58A62}
+.home-v2 .artists-editorial .artist-profile a:hover{color:#D8C5A2}
+@media(max-width:760px){.home-v2 .artists-editorial{margin-inline:calc(-5% / .9);padding:60px 5.5%}}
 .home-v2 .artist-rows{display:grid;grid-template-columns:1fr 1fr;gap:32px}
 .home-v2 .artist-profile{border-top:1px solid var(--line);padding-top:26px}
 .home-v2 .artist-profile h3{font:400 clamp(36px,5vw,66px) var(--font-display);margin:12px 0}
