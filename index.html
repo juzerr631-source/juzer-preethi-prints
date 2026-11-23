@@ -23,15 +23,64 @@
   .header-actions{display:flex;align-items:center;gap:18px;flex-shrink:0}.brand-logo{display:block;width:94px;height:94px;object-fit:contain}.brand-logo-link{display:block;line-height:0}@media(max-width:600px){header{gap:10px}.header-actions{gap:10px}.brand-logo{width:66px;height:66px}.wordmark{font-size:17px}.wordmark small{font-size:8px;letter-spacing:.05em}.menu-button{font-size:10px}}
 .hero .mark{animation:heroEnter .95s cubic-bezier(.2,.7,.2,1) both}@keyframes heroEnter{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.button,.social-link{transition:transform .25s ease,background .25s ease,border-color .25s ease}.button:hover,.social-link:hover{transform:translateY(-3px)}.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:none}.support-strip{padding:52px 0;border-top:1px solid var(--line);text-align:center}.support-strip h2{font:400 32px 'Playfair Display',Georgia,serif}.support-strip p{max-width:500px;margin:0 auto 20px;color:var(--muted)}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
 </style>
-</head>
+<link rel="stylesheet" href="assets/art-house-v2.css?v=1">
+<style>
+/* Phase 2: editorial homepage, scoped to this preview branch */
+.home-v2{margin:0 auto;max-width:1440px;padding:0 6%}
+.home-v2 .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:clamp(24px,5vw,88px);align-items:center;min-height:660px;padding:72px 0 100px;text-align:left}
+.home-v2 .hero::before,.home-v2 .hero::after{display:none}
+.home-v2 .mark{width:auto;padding:0;animation:heroEnter .95s cubic-bezier(.2,.7,.2,1) both}
+.home-v2 h1{font-size:clamp(56px,7vw,112px);line-height:1.03;letter-spacing:-.065em;margin:20px 0}
+.home-v2 .tagline{font-size:clamp(19px,2vw,27px)}
+.home-v2 .intro{margin:28px 0 0;max-width:480px;font-size:15px}
+.home-v2 .artist-links{justify-content:flex-start;margin-top:32px}
+.home-v2 .hero-art{position:relative;min-width:0}
+.home-v2 .hero-art .art-panel{aspect-ratio:4/5;background:#E8E1D5;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+.home-v2 .hero-art img{width:100%;height:100%;object-fit:cover;display:block}
+.home-v2 .hero-art .art-placeholder{padding:15%;text-align:center;color:#686b61;font:italic clamp(20px,3vw,36px)/1.35 Georgia,serif}
+.home-v2 .art-caption{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding:13px 0;font-size:11px;letter-spacing:.07em;color:var(--muted)}
+.home-v2 .section-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:32px}
+.home-v2 .section-heading h2{font:400 clamp(34px,4.7vw,64px)/1.12 var(--font-display);letter-spacing:-.04em;margin:10px 0 0}
+.home-v2 .collection{border-top:1px solid var(--line);padding:85px 0}
+.home-v2 .collection-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(18px,4vw,64px);align-items:start}
+.home-v2 .collection-card:nth-child(2){margin-top:95px}
+.home-v2 .collection-card{display:block;text-decoration:none}
+.home-v2 .collection-card .art-panel{background:var(--soft);overflow:hidden;aspect-ratio:5/4;display:flex;align-items:center;justify-content:center}
+.home-v2 .collection-card:nth-child(2) .art-panel{aspect-ratio:4/5}
+.home-v2 .collection-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease-editorial)}
+.home-v2 .collection-card:hover img{transform:scale(1.025)}
+.home-v2 .collection-card .card-copy{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding:18px 0}
+.home-v2 .collection-card h3{font:400 clamp(22px,2.8vw,35px) var(--font-display);margin:0}
+.home-v2 .collection-card span{font-size:12px;color:var(--muted)}
+.home-v2 .artists-editorial{padding:80px 0;border-top:1px solid var(--line)}
+.home-v2 .artist-rows{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.home-v2 .artist-profile{border-top:1px solid var(--line);padding-top:26px}
+.home-v2 .artist-profile h3{font:400 clamp(36px,5vw,66px) var(--font-display);margin:12px 0}
+.home-v2 .artist-profile p{max-width:390px;color:var(--muted)}
+.home-v2 .artist-profile a{display:inline-block;margin-top:8px;border-bottom:1px solid var(--ink);padding-bottom:4px}
+.home-v2 .support-strip{margin-top:20px}
+@media(max-width:760px){.home-v2{padding:0 5%}.home-v2 .hero{grid-template-columns:1fr;min-height:0;padding:62px 0 75px;gap:36px}.home-v2 .hero-art .art-panel{aspect-ratio:5/4}.home-v2 .collection{padding:60px 0}.home-v2 .collection-grid{grid-template-columns:1fr;gap:32px}.home-v2 .collection-card:nth-child(2){margin-top:0}.home-v2 .section-heading{align-items:start;flex-direction:column}.home-v2 .artist-rows{grid-template-columns:1fr;gap:36px}.home-v2 .artists-editorial{padding:55px 0}.home-v2 h1{font-size:clamp(53px,12vw,76px)}}
+</style></head>
 <body>
   <div class="notice">A shared place for photographs and the stories they hold</div>
   <header><a class="wordmark" href="index.html">The StoryTeller Frames<small>PHOTOGRAPHY BY JUZER &amp; PREETHI</small></a><div class="header-actions"><button class="menu-button" id="menuOpen" aria-controls="artistMenu" aria-expanded="false">Artists&nbsp; ☰</button><a class="brand-logo-link" href="index.html" aria-label="StoryTeller home"><img class="brand-logo" src="images/storyteller-logo.jpg" width="94" height="94" alt="StoryTeller — Where frames find a Home"></a></div></header>
   <div class="menu" id="artistMenu" aria-hidden="true"><div class="menu-panel"><div class="menu-head"><span class="eyebrow">Meet the artists</span><button class="menu-close" id="menuClose" aria-label="Close menu">Close&nbsp; ×</button></div><nav class="menu-links"><a href="artist.html?artist=Preethi">Preethi’s gallery</a><a href="artist.html?artist=Juzer">Juzer’s gallery</a><a href="about.html">About Preethi</a><a href="support.html">Feedback & support</a><a href="admin.html">Artist sign in</a></nav></div></div>
-  <main>
-    <section class="hero" aria-labelledby="brandTitle"><div class="mark"><span class="eyebrow">Photographs to keep close</span><h1 id="brandTitle">The StoryTeller<br>Frames</h1><p class="tagline">where frames find a home.</p><div class="ornament"></div><div class="intro"><p>Every photograph begins with a moment that makes us pause and see the world a little differently.</p><p>Two ways of seeing, brought together through frames that tell a story.</p><p>Take a look around. You might find a little of us, and a little of yourself, in every frame.</p></div><div class="artist-links"><a class="button" href="artist.html?artist=Preethi">See Preethi’s photographs&nbsp; ↗</a><a class="button" href="artist.html?artist=Juzer">See Juzer’s photographs&nbsp; ↗</a></div></div></section>
-    <section class="social reveal" aria-labelledby="followTitle"><span class="eyebrow">Follow along</span><h2 id="followTitle">Two ways of seeing.</h2><div class="social-links"><a class="social-link" href="https://www.instagram.com/gli.tch_frames/" target="_blank" rel="noopener noreferrer"><strong>Preethi</strong><span>@gli.tch_frames&nbsp; ↗</span></a><a class="social-link" href="https://www.instagram.com/lensxmoon/" target="_blank" rel="noopener noreferrer"><strong>Juzer</strong><span>@lensxmoon&nbsp; ↗</span></a></div></section>
-  <section class="support-strip reveal"><span class="eyebrow">Here to help</span><h2>Every frame has a story.</h2><p>Have a question, an idea, or something that needs fixing? We’re listening.</p><a class="button" href="support.html">Feedback & support ↗</a></section></main>
+  <main class="home-v2">
+<section class="hero" aria-labelledby="brandTitle">
+ <div class="mark"><span class="eyebrow">An independent photography gallery</span><h1 id="brandTitle">Every frame<br>tells a <em>story.</em></h1><p class="tagline">where frames find a home.</p><div class="intro"><p>Two photographers. Two ways of seeing. A collection of moments worth keeping close.</p><p>Discover fine art photographs thoughtfully made for your walls.</p></div><div class="artist-links"><a class="editorial-button editorial-button--solid" href="#collections">Explore the collection ↗</a><a class="editorial-button" href="#artists">Meet the artists</a></div></div>
+ <div class="hero-art"><div class="art-panel" id="featuredHero"><span class="art-placeholder">A moment, framed forever.</span></div><div class="art-caption"><span id="featuredCredit">Selected work · The StoryTeller Frames</span><span>01 / Gallery</span></div></div>
+</section>
+<section class="collection" id="collections"><div class="section-heading"><div><span class="eyebrow">The collection</span><h2>Seen differently.<br>Kept forever.</h2></div><p class="intro" style="max-width:300px;margin:0">Explore photographs that hold a place, a feeling, or a fleeting moment.</p></div>
+<div class="collection-grid">
+<a class="collection-card editorial-reveal" href="artist.html?artist=Juzer"><div class="art-panel" id="juzerFeature"><span class="art-placeholder">Architecture · Light · Stillness</span></div><div class="card-copy"><h3>Through Juzer's lens</h3><span>Explore photographs ↗</span></div></a>
+<a class="collection-card editorial-reveal" href="artist.html?artist=Preethi"><div class="art-panel" id="preethiFeature"><span class="art-placeholder">Details · Places · Everyday poetry</span></div><div class="card-copy"><h3>Through Preethi's lens</h3><span>Explore photographs ↗</span></div></a>
+</div></section>
+<section class="artists-editorial" id="artists"><div class="section-heading"><div><span class="eyebrow">Behind the photographs</span><h2>Two artists.<br>One shared gallery.</h2></div></div>
+<div class="artist-rows"><article class="artist-profile editorial-reveal"><span class="eyebrow">Artist 01</span><h3>Juzer Raja</h3><p>Finding stories in architecture, quiet streets, light and the spaces in between.</p><a href="about-juzer.html">Get to know Juzer ↗</a></article><article class="artist-profile editorial-reveal"><span class="eyebrow">Artist 02</span><h3>Preethi</h3><p>Noticing the little details and everyday moments that deserve a second look.</p><a href="about.html">Get to know Preethi ↗</a></article></div>
+</section>
+<section class="social editorial-reveal" aria-labelledby="followTitle"><span class="eyebrow">Follow along</span><h2 id="followTitle">See what we see.</h2><div class="social-links"><a class="social-link" href="https://www.instagram.com/gli.tch_frames/" target="_blank" rel="noopener noreferrer"><strong>Preethi</strong><span>@gli.tch_frames ↗</span></a><a class="social-link" href="https://www.instagram.com/lensxmoon/" target="_blank" rel="noopener noreferrer"><strong>Juzer</strong><span>@lensxmoon ↗</span></a></div></section>
+<section class="support-strip editorial-reveal"><span class="eyebrow">Here to help</span><h2>Every frame has a story.</h2><p>Have a question about an artwork or an order?</p><a class="editorial-button" href="support.html">Feedback & support ↗</a></section>
+</main>
   <footer><span>The StoryTeller Frames&nbsp; · &nbsp;where frames find a home.</span><a href="admin.html">Artist sign in</a></footer>
   <script>
     const menu=document.getElementById('artistMenu'),open=document.getElementById('menuOpen');
@@ -39,5 +88,22 @@
     open.addEventListener('click',()=>{menu.classList.add('open');menu.setAttribute('aria-hidden','false');open.setAttribute('aria-expanded','true');document.body.style.overflow='hidden'});
     document.getElementById('menuClose').addEventListener('click',closeMenu);menu.addEventListener('click',e=>{if(e.target===menu)closeMenu()});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
   </script>
-<script>if('IntersectionObserver' in window){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>io.observe(el))}else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));</script></body>
+<script>if('IntersectionObserver' in window){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>io.observe(el))}else document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));</script><script src="site-config.js"></script><script src="site-api.js?v=20261017c"></script><script>
+/* Homepage images are sourced from the existing published artist galleries. No placeholder stock photos. */
+(async function(){
+ const slots=[{artist:'Juzer',id:'juzerFeature'},{artist:'Preethi',id:'preethiFeature'}];
+ const results=await Promise.allSettled(slots.map(x=>getArtistArtworks(x.artist)));
+ let heroSet=false;
+ results.forEach((res,i)=>{
+  if(res.status!=='fulfilled'||!Array.isArray(res.value)||!res.value.length)return;
+  const item=res.value.find(x=>x.image_path)||null;if(!item)return;
+  const panel=document.getElementById(slots[i].id);
+  const img=document.createElement('img');img.src=publicImage(item.image_path);img.alt=item.title||'Photograph';img.loading='lazy';img.decoding='async';
+  img.onerror=()=>{img.remove();panel.querySelector('.art-placeholder').hidden=false};
+  panel.querySelector('.art-placeholder').hidden=true;panel.appendChild(img);
+  if(!heroSet){heroSet=true;const hero=document.getElementById('featuredHero');const heroImg=document.createElement('img');heroImg.src=img.src;heroImg.alt=img.alt;heroImg.decoding='async';heroImg.onerror=()=>{heroImg.remove();hero.querySelector('.art-placeholder').hidden=false};hero.querySelector('.art-placeholder').hidden=true;hero.appendChild(heroImg);document.getElementById('featuredCredit').textContent=(item.title||'Selected photograph')+' · '+slots[i].artist}
+ });
+})();
+</script><script defer src="assets/art-house-v2.js?v=1"></script>
+</body>
 </html>
